@@ -29,7 +29,7 @@ def get_hello_app(nickname, name_parameter="Name", n_wait_ms=1000, host="localho
 
     mgraph = ModuleGraph(modules)
     mgraph.connect_modules("nr.output", "hn.input", "conversation_name_parameter", 10)
- #   mgraph.connect_modules("hn.output", "hty.greeting_input", "hello_name", 10)
+    mgraph.connect_modules("hn.output", "hty.input", "hello_name", 10)
 
     hello_app = App(modulegraph = mgraph, host = host, name = nickname)
 

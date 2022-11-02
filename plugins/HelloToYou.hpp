@@ -51,9 +51,9 @@ dunedaq::utilities::WorkerThread thread_;
 void do_work(std::atomic<bool>&);
 
 //Configuration
-//using source_t=dunedaq::iomanager::ReceiverConcept<String>; //we will reveive the data from greetingDataQueue
-//std::shared_ptr<source_t> greetingDataQueue_; //definition of variable which holds "Hello Name" sentence
-//std::chrono::milliseconds queueTimeout_; //definition of queue timeout variable
+using source_t=dunedaq::iomanager::ReceiverConcept<String>; //we will reveive the data from greetingDataQueue
+std::shared_ptr<source_t> greetingDataQueue_; //definition of variable which holds "Hello Name" sentence
+std::chrono::milliseconds queueTimeout_; //definition of queue timeout variable
 
 };
 

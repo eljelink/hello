@@ -35,7 +35,7 @@ HelloName::HelloName(const std::string& name)
   : dunedaq::appfwk::DAQModule(name)
   , thread_(std::bind(&HelloName::do_work, this, std::placeholders::_1))
   , inputQueue_(nullptr)
-//  , outputQueue_(nullptr)
+  , outputQueue_(nullptr)
   , queueTimeout_(100)
 {
   register_command("start", &HelloName::do_start);
@@ -47,12 +47,12 @@ HelloName::init(const nlohmann::json& initobj)
 {
   TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
 
-  auto qi = appfwk::connection_index(initobj, { "input" });//, "output" });
- // try {
- //   outputQueue_ = get_iom_sender<String>(qi["output"]);
- // } catch (const ers::Issue& excpt) {
-  //  throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
- // }
+  auto qi = appfwk::connection_index(initobj, { "input", "output" });
+  try {
+    outputQueue_ = get_iom_sender<String>(qi["output"]);
+  } catch (const ers::Issue& excpt) {
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
+  }
   try {
     inputQueue_ = get_iom_receiver<String>(qi["input"]);
   } catch (const ers::Issue& excpt) {
@@ -105,21 +105,21 @@ std::ostringstream oss_prog;
 oss_prog << "Greeting sentence: " << greetingString;
 ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
     bool successfullyWasSent = false;
- //   while (!successfullyWasSent && running_flag.load()) {
- //     TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Pushing the greeting onto the output queue";
- //     try {
- //       String wrapped(workingString);
- //       outputQueue_->send(std::move(wrapped), queueTimeout_);
- //       successfullyWasSent = true;
- //       ++sentCount;
- //     } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
- //        throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
- //       std::ostringstream oss_warn;
-  //      oss_warn << "Push to output queue \"" << outputQueue_->get_name() << "\"";
- //       ers::warning(dunedaq::iomanager::TimeoutExpired(ERS_HERE, get_name(), oss_warn.str(),
- //       std::chrono::duration_cast<std::chrono::milliseconds>(queueTimeout_).count()));
- //    }
- //   }
+    while (!successfullyWasSent && running_flag.load()) {
+      TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Pushing the greeting onto the output queue";
+      try {
+        String wrapped(workingString);
+        outputQueue_->send(std::move(wrapped), queueTimeout_);
+        successfullyWasSent = true;
+        ++sentCount;
+      } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
+         throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
+        std::ostringstream oss_warn;
+        oss_warn << "Push to output queue \"" << outputQueue_->get_name() << "\"";
+        ers::warning(dunedaq::iomanager::TimeoutExpired(ERS_HERE, get_name(), oss_warn.str(),
+        std::chrono::duration_cast<std::chrono::milliseconds>(queueTimeout_).count()));
+     }
+    }
     TLOG_DEBUG(TLVL_GREETING) << get_name() << ": End of do_work loop";
   }
 

@@ -54,8 +54,8 @@ void do_work(std::atomic<bool>&);
 //Configuration
 using source_t = dunedaq::iomanager::ReceiverConcept<String>;
 std::shared_ptr<source_t> inputQueue_;
-//using sink_t = dunedaq::iomanager::SenderConcept<String>;
-//std::shared_ptr<sink_t> outputQueue_;
+using sink_t = dunedaq::iomanager::SenderConcept<String>;
+std::shared_ptr<sink_t> outputQueue_;
 std::chrono::milliseconds queueTimeout_;
 };
 
@@ -63,7 +63,7 @@ std::chrono::milliseconds queueTimeout_;
 //  std::atomic<int>     m_amount_since_last_get_info_call {0};
 
 
-}// namespace dunedaq
-}//namespace hello
+}// namespace hello
+}//namespace dunedaq
 
 #endif // HELLO_PLUGINS_HELLONAME_HPP_

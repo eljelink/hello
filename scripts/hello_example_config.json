@@ -10,8 +10,7 @@
   },
 
   "hello": {
-   // "num_namereceivers": 2,
-    "name_parameter": "Jane", 
-    "n_wait_ms": 50
+    "name_string": "Adam", 
+    "wait_ms": 50
   }
 }

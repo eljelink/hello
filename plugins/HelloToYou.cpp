@@ -33,8 +33,8 @@ namespace dunedaq::hello {
 HelloToYou::HelloToYou(const std::string& name)
   : dunedaq::appfwk::DAQModule(name)
 , thread_(std::bind(&HelloToYou::do_work, this, std::placeholders::_1))
-//, greetingDataQueue_(nullptr)
-//, queueTimeout_(100)
+, greetingDataQueue_(nullptr)
+, queueTimeout_(100)
 {
   register_command("start", &HelloToYou::do_start);
   register_command("stop", &HelloToYou::do_stop);
@@ -43,14 +43,14 @@ HelloToYou::HelloToYou(const std::string& name)
 void
 HelloToYou::init(const nlohmann::json& obj)
 {
-//TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
-//  auto qi = appfwk::connection_index(obj, { "greeting_input" });
-//  try {
-//    greetingDataQueue_ = get_iom_receiver<String>(qi["greeting_input"]);
-//  } catch (const ers::Issue& excpt) {
-//    throw InvalidQueueFatalError(ERS_HERE, get_name(), "greeting input", excpt);
-//  }
-//TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
+TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
+  auto qi = appfwk::connection_index(obj, { "input" });
+  try {
+    greetingDataQueue_ = get_iom_receiver<String>(qi["input"]);
+  } catch (const ers::Issue& excpt) {
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "input", excpt);
+  }
+TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
 }
 
 
@@ -82,17 +82,17 @@ HelloToYou::do_work(std::atomic<bool>& running_flag)
 
   while (running_flag.load()) {
     bool greetingWasSuccessfullyReceived = false;
- //   while (!greetingWasSuccessfullyReceived && running_flag.load()) {
- //     TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Going to receive data from the greeting queue";
- //     try {
- //       greetingData = greetingDataQueue_->receive(queueTimeout_).conversation;//.String
- //       greetingWasSuccessfullyReceived = true;
- //       ++receivedCount;
- //     } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
-//       continue;
-//      }
- //   }
-//TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Received greeting" << greetingData << ". Now going to answer.";
+    while (!greetingWasSuccessfullyReceived && running_flag.load()) {
+      TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Going to receive data from the greeting queue";
+      try {
+        greetingData = greetingDataQueue_->receive(queueTimeout_).conversation;//.String
+        greetingWasSuccessfullyReceived = true;
+        ++receivedCount;
+      } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
+       continue;
+      }
+    }
+TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Received greeting" << greetingData << ". Now going to answer.";
 
     if (greetingWasSuccessfullyReceived) {
       std::ostringstream oss_prog;
