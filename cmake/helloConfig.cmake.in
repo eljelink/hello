@@ -2,6 +2,8 @@
 
 include(CMakeFindDependencyMacro)
 
+# Make sure that all find_dependency commands correspond with find_package commands in CMakeLists.txt
+
 find_dependency(appfwk)
 find_dependency(logging)
 find_dependency(ers)
