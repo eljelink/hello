@@ -32,7 +32,7 @@ public:
   explicit HelloToYou(const std::string& name);
 
   void init(const data_t&) override;
-//  void get_info(opmonlib::InfoCollector&, int /*level*/) override;
+  void get_info(opmonlib::InfoCollector&, int /*level*/) override;
 
   HelloToYou(const HelloToYou&) = delete;
   HelloToYou& operator=(const HelloToYou&) = delete;
@@ -54,6 +54,10 @@ void do_work(std::atomic<bool>&);
 using source_t=dunedaq::iomanager::ReceiverConcept<String>; //we will reveive the data from greetingDataQueue
 std::shared_ptr<source_t> greetingDataQueue_; //definition of variable which holds "Hello Name" sentence
 std::chrono::milliseconds queueTimeout_; //definition of queue timeout variable
+
+// Statistic counters
+std::atomic<int64_t> receivedCount {0};
+std::atomic<int>     answerCount {0};
 
 };
 

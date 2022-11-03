@@ -120,7 +120,7 @@ NameReceiver::do_work(std::atomic<bool>& running_flag)
     ++receivedCount;
     ++m_generated;
     std::ostringstream oss_prog;
-    oss_prog << "Received name configuration parameter #" << receivedCount << "with contents" << confName;
+    oss_prog << "Received name configuration parameter #" << receivedCount << " with contents " << confName;
     ers::debug(ProgressUpdate(ERS_HERE, "NameReceiver", oss_prog.str()));
 
     TLOG_DEBUG(TLVL_NAME_CONFIGURATION) << get_name() << ": Pushing name parameter onto " << outputNameQueue_ << " outputQueues";
@@ -166,7 +166,7 @@ NameReceiver::get_info(opmonlib::InfoCollector& ci, int /* level */)
 {
   namereceiverinfo::Info info;
   info.parameter_names = receivedCount;
-  info.new_parameter_names = m_generated.exchange(0);
+  info.new_parameter_names = sentCount.exchange(0);
 
   ci.add(info);
 }

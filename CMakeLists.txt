@@ -38,8 +38,8 @@ find_package(daqconf REQUIRED)
 daq_codegen(namereceiver.jsonnet TEMPLATES Structs.hpp.j2 Nljs.hpp.j2)
 daq_codegen(namereceiverinfo.jsonnet DEP_PKGS opmonlib TEMPLATES opmonlib/InfoStructs.hpp.j2 opmonlib/InfoNljs.hpp.j2)
 daq_codegen(confgen.jsonnet DEP_PKGS daqconf TEMPLATES Structs.hpp.j2)
-# daq_codegen(hellonameinfo.jsonnet DEP_PKGS opmonlib TEMPLATES opmonlib/InfoStructs.hpp.j2 opmonlib/InfoNljs.hpp.j2)
-# daq_codegen(hellotoyouinfo.jsonnet DEP_PKGS opmonlib TEMPLATES opmonlib/InfoStructs.hpp.j2 opmonlib/InfoNljs.hpp.j2)
+daq_codegen(hellonameinfo.jsonnet DEP_PKGS opmonlib TEMPLATES opmonlib/InfoStructs.hpp.j2 opmonlib/InfoNljs.hpp.j2)
+daq_codegen(hellotoyouinfo.jsonnet DEP_PKGS opmonlib TEMPLATES opmonlib/InfoStructs.hpp.j2 opmonlib/InfoNljs.hpp.j2)
 
 ##############################################################################
 

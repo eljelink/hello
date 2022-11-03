@@ -25,7 +25,7 @@ local info = {
 
     info: s.record("Info", [
         s.field("parameter_names", self.uint8, 0, doc="Counting name configuration parameters"),
-        s.field("new_parameter_names", self.uint8, 0, doc="Counting incrementally generated name parameters"),
+        s.field("new_parameter_names", self.uint8, 0, doc="Counting sent name parameters"),
     ], doc="Name receiver information"),
 };
 

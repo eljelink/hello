@@ -69,7 +69,7 @@ namereceiver::Conf cfg_; //invalid use of incomplete type 'class dunedaq::hello:
 
 // Statistic counters
 std::atomic<int64_t> receivedCount {0};
-std::atomic<int>     m_generated {0};
+std::atomic<int>     sentCount {0};
 
 };
 

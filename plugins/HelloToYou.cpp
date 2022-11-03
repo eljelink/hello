@@ -11,7 +11,7 @@
 #include "HelloToYou.hpp"
 
 //#include "hello/hellotoyou/Nljs.hpp"
-//#include "hello/hellotoyouinfo/InfoNljs.hpp"
+#include "hello/hellotoyouinfo/InfoNljs.hpp"
 #include "appfwk/DAQModuleHelper.hpp"
 #include "iomanager/IOManager.hpp" //because I am receiving data from the HelloName module
 #include "logging/Logging.hpp"
@@ -77,6 +77,7 @@ HelloToYou::do_work(std::atomic<bool>& running_flag)
 {
   TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_work() method";
   std::string greetingData;//definition of variable which holds "Hello Name" greeting sentence
+  std::string answerString; 
   int receivedCount = 0;
   int answerCount = 0;
 
@@ -95,20 +96,20 @@ HelloToYou::do_work(std::atomic<bool>& running_flag)
 TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Received greeting" << greetingData << ". Now going to answer.";
 
     if (greetingWasSuccessfullyReceived) {
-      std::ostringstream oss_prog;
-      oss_prog << "Greeting sentence #" << receivedCount << " received: " << greetingData;
-      ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
-
       TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Answering the greeting sentence";
-      std::string answerString; 
       answerString = "Hello to you!";
       ++answerCount;
+      std::ostringstream oss_prog;
+      oss_prog << "Greeting sentence #" << receivedCount << " received: " << greetingData << " and answer #" << answerCount << " respond: " << answerString;
+      ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
+
+      TLOG_DEBUG(TLVL_ANSWER) << get_name() << "Answer to the greeting" << answerString;
     }
 TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": End of do_work loop";
 }
 
-  std::string answerString; 
-  answerString = "Hello to you!";
+//  std::string answerString; 
+//  answerString = "Hello to you!";
   
   std::ostringstream oss_summ;
   oss_summ << ": Exiting do_work() method, received " << receivedCount << " greetings, "
@@ -117,6 +118,17 @@ TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": End of do_work loop";
 
    TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
+
+void
+HelloToYou::get_info(opmonlib::InfoCollector& ci, int /* level */)
+{
+  hellotoyouinfo::Info info;
+  info.greeting_sentences = receivedCount;
+  info.number_of_answers = answerCount.exchange(0);
+
+  ci.add(info);
+}
+
 
 } // namespace dunedaq::hello
 

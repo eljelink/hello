@@ -18,7 +18,7 @@
 #include "logging/Logging.hpp"
 
 //#include "hello/helloname/Nljs.hpp" I don't do configaration
-//#include "hello/hellonameinfo/InfoNljs.hpp" I don't do get_info for now
+#include "hello/hellonameinfo/InfoNljs.hpp"
 
 #include <string>
 #include <thread>
@@ -88,15 +88,28 @@ HelloName::do_work(std::atomic<bool>& running_flag)
   std::string workingString;
 
   while (running_flag.load()) {
-    TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Going to receive data from input queue";
-    try {
-      workingString = inputQueue_->receive(queueTimeout_).conversation;//.list
-    } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
+     bool nameWasSuccessfullyReceived = false;
+    while (!nameWasSuccessfullyReceived && running_flag.load()) {
+      TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Going to receive data from the greeting queue";
+      try {
+        workingString = inputQueue_->receive(queueTimeout_).conversation;
+        nameWasSuccessfullyReceived = true;
+        ++receivedCount;
+      } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
+       continue;
+      }
+    }
+
+ 
+ //   TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Going to receive data from input queue";
+ //   try {
+ //     workingString = inputQueue_->receive(queueTimeout_).conversation;//.list
+ //   } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
 // it is perfectly reasonable that there might be no data in the queue
 // some fraction of the times that we check, so we just continue on and try again
-     continue;
-     }
-    ++receivedCount;
+ //    continue;
+ //    }
+ //   ++receivedCount;
     TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Received name parameter"  << workingString << ". Using it in the greeting sentence";
     std::string greetingString;
     greetingString = "Hello " + workingString + "!";
@@ -128,6 +141,17 @@ oss_sum << ": Exiting do_work() method, received " << receivedCount << " names a
 ers::info(ProgressUpdate(ERS_HERE, get_name(), oss_sum.str()));
 TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
+
+void
+HelloName::get_info(opmonlib::InfoCollector& ci, int /* level */)
+{
+  hellonameinfo::Info info;
+  info.parameter_names = receivedCount;
+  info.greeting_sentences = sentCount.exchange(0);
+
+  ci.add(info);
+}
+
 }// namespace hello
 }//namespace dunedaq
 DEFINE_DUNE_DAQ_MODULE(dunedaq::hello::HelloName)

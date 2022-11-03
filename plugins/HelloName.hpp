@@ -33,7 +33,7 @@ public:
   explicit HelloName(const std::string& name);
 
   void init(const data_t&) override;
- // void get_info(opmonlib::InfoCollector&, int /*level*/) override;
+  void get_info(opmonlib::InfoCollector&, int /*level*/) override;
 
   HelloName(const HelloName&) = delete;
   HelloName& operator=(const HelloName&) = delete;
@@ -59,8 +59,9 @@ std::shared_ptr<sink_t> outputQueue_;
 std::chrono::milliseconds queueTimeout_;
 };
 
-//  std::atomic<int64_t> m_total_amount {0};
-//  std::atomic<int>     m_amount_since_last_get_info_call {0};
+// Statistic counters
+std::atomic<int64_t> receivedCount {0};
+std::atomic<int>     sentCount {0};
 
 
 }// namespace hello
