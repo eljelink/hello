@@ -1,7 +1,7 @@
 /**
  * @file NameReceiver.hpp
  *
- * Developer(s) of this DAQModule have yet to replace this line with a brief description of the DAQModule.
+ * This module receives a name configuration parameter and sends it to HelloName module. 
  *
  * This is part of the DUNE DAQ Software Suite, copyright 2020.
  * Licensing/copyright details are in the COPYING file that you should have
@@ -11,11 +11,10 @@
 #ifndef HELLO_PLUGINS_NAMERECEIVER_HPP_
 #define HELLO_PLUGINS_NAMERECEIVER_HPP_
 
-#include "appfwk/DAQModule.hpp" //default
+#include "appfwk/DAQModule.hpp"
 #include "iomanager/Sender.hpp" // because I want to send the name parameter to HelloName module
-#include "ers/Issue.hpp" //because I have ers messages
+#include "ers/Issue.hpp"
 #include "utilities/WorkerThread.hpp"
-//#include "hello/namereceiver/Nljs.hpp"
 #include "hello/namereceiver/Structs.hpp"
 
 #include "StringWrapper.hpp"
@@ -36,7 +35,6 @@ public:
   explicit NameReceiver(const std::string& name);
 
   void init(const nlohmann::json& obj) override;
-
   void get_info(opmonlib::InfoCollector&, int /*level*/) override;
 
   NameReceiver(const NameReceiver&) = delete;
@@ -65,7 +63,7 @@ int waitBetweenSendsMsec;
 using sink_t = dunedaq::iomanager::SenderConcept<String>;
 std::shared_ptr<sink_t> outputNameQueue_;
 std::chrono::milliseconds queueTimeout_;
-namereceiver::Conf cfg_; //invalid use of incomplete type 'class dunedaq::hello::NameReceiver'
+namereceiver::Conf cfg_;
 
 // Statistic counters
 std::atomic<int64_t> receivedCount {0};
@@ -78,9 +76,8 @@ ERS_DECLARE_ISSUE_BASE(hello,
  NoOutputQueuesAvailableWarning,
  appfwk::GeneralDAQModuleIssue,
  "No output queues were available, so the configuration parameter will be dropped. Has initialization been successfully completed?",
- ((std::string)name),
+  (std::string)name),
  ERS_EMPTY)
 
 } // namespace dunedaq
 #endif // HELLO_PLUGINS_NAMERECEIVER_HPP_
-
