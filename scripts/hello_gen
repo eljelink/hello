@@ -70,12 +70,8 @@ def cli(config, json_dir):#name_string, wait_ms
     
     the_system.apps["hello-app"] = helloapp_gen.get_hello_app(
         nickname = "the-solo-app", 
-	#num_namereceivers = hello.num_namereceivers,
-	
         name_parameter = hello.name_string,
-	    n_wait_ms = hello.wait_ms
-    #name_parameter = Conf.nameParameter,
-    #n_wait_ms = Conf.waitBetweenSendsMsec,
+        n_wait_ms = hello.wait_ms
     )
 
     ####################################################################                                  
