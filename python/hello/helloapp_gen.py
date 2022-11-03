@@ -23,7 +23,6 @@ def get_hello_app(nickname, name_parameter="Name", n_wait_ms=1000, host="localho
 
     modules = []
     modules += [DAQModule(name="nr", plugin="NameReceiver", conf=namereceiver.Conf(nameParameter=name_parameter, waitBetweenSendsMsec=n_wait_ms))]
-# some_configured_value = some_configured_value
     modules += [DAQModule(name="hty", plugin="HelloToYou")]
     modules += [DAQModule(name="hn", plugin="HelloName")]
 
