@@ -9,14 +9,13 @@
  */
 
 #include "HelloToYou.hpp"
+#include "CommonIssues.hpp"
 
-//#include "hello/hellotoyou/Nljs.hpp"
 #include "hello/hellotoyouinfo/InfoNljs.hpp"
 #include "appfwk/DAQModuleHelper.hpp"
 #include "iomanager/IOManager.hpp" //because I am receiving data from the HelloName module
 #include "logging/Logging.hpp"
 #include "ers/Issue.hpp"
-#include "CommonIssues.hpp"
 
 #include <chrono>
 #include <functional>
@@ -77,7 +76,7 @@ HelloToYou::do_work(std::atomic<bool>& running_flag)
 {
   TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_work() method";
   std::string greetingData;//definition of variable which holds "Hello Name" greeting sentence
-  std::string answerString; 
+  std::string answerString;//definition of variable which holds "Hello to you!" answer sentence
   int receivedCount = 0;
   int answerCount = 0;
 
@@ -107,9 +106,6 @@ TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": Received greeting" << greetingData <
     }
 TLOG_DEBUG(TLVL_ANSWER) << get_name() << ": End of do_work loop";
 }
-
-//  std::string answerString; 
-//  answerString = "Hello to you!";
   
   std::ostringstream oss_summ;
   oss_summ << ": Exiting do_work() method, received " << receivedCount << " greetings, "
