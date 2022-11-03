@@ -27,14 +27,6 @@ local types = {
                            ],
                    doc="NameReceiver configuration"),
 
-
-
- //   conf: s.record("Conf", [
- //                          s.field("some_configured_value", self.int4, 999999,
- //                                          doc="This line is where you'd document the value"),
- //                          ],
- //                  doc="This configuration is for developer education only"),
-
 };
 
 moo.oschema.sort_select(types, ns)
