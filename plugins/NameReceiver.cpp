@@ -12,13 +12,14 @@
 
 #include "hello/namereceiver/Nljs.hpp"
 #include "hello/namereceiverinfo/InfoNljs.hpp"
-#include "ers/ers.hpp"
 
+#include "ers/ers.hpp"
 #include "appfwk/DAQModuleHelper.hpp"
 #include "appfwk/app/Nljs.hpp"
 #include "iomanager/IOManager.hpp"
 #include "logging/Logging.hpp"
 #include "ers/Issue.hpp"
+
 #include "CommonIssues.hpp"
 #include "StringWrapper.hpp"
 
@@ -54,18 +55,11 @@ NameReceiver::init(const nlohmann::json& iniobj)
 {
 TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS)  << get_name() << ": Entering init() method";
 auto qi = appfwk::connection_index(iniobj, { "output" });
-//  iomanager::IOManager iom;
   try {
     outputNameQueue_ = get_iom_sender<String>(qi["output"]);
   } catch (const ers::Issue& excpt) {
     throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
   }
-
-//try {
-//  outputNameQueue_ = get_iom_sender<iomanager::ConnectionRef const& conn_ref>(qi["output"]);
-//} catch (const ers::Issue& excpt) {
-//   throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
-// }
 TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
 }
 
@@ -74,7 +68,7 @@ void
 NameReceiver::do_start(const nlohmann::json& /*args*/)
 {
   TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_start() method for NameReceiver";
-  thread_.start_working_thread(); //in listrev example is thread_ not pthread_t?!!
+  thread_.start_working_thread();
   TLOG() << get_name() << " successfully started";
   TLOG_DEBUG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_start() method for NameReceiver";
 }
