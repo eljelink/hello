@@ -10,19 +10,19 @@
 
 #include "HelloName.hpp"
 
-#include "StringWrapper.hpp"
+#include "StringWrapper.hpp" //because I need to serialize data sent between modules
 #include "ers/Issue.hpp"
-#include "CommonIssues.hpp"
-#include "appfwk/DAQModuleHelper.hpp"
+#include "appfwk/DAQModuleHelper.hpp" //I need that for iomanager definition
 #include "iomanager/IOManager.hpp" //because I want to send and receive data
 #include "logging/Logging.hpp"
 
-//#include "hello/helloname/Nljs.hpp" I don't do configaration
+#include "CommonIssues.hpp"
 #include "hello/hellonameinfo/InfoNljs.hpp"
 
 #include <string>
 #include <thread>
 #include <chrono>
+
 //for logging
 #define TRACE_NAME "HelloName" //NOLINT
 #define TLVL_ENTER_EXIT_METHODS 10
@@ -100,16 +100,6 @@ HelloName::do_work(std::atomic<bool>& running_flag)
       }
     }
 
- 
- //   TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Going to receive data from input queue";
- //   try {
- //     workingString = inputQueue_->receive(queueTimeout_).conversation;//.list
- //   } catch (const dunedaq::iomanager::TimeoutExpired& excpt) {
-// it is perfectly reasonable that there might be no data in the queue
-// some fraction of the times that we check, so we just continue on and try again
- //    continue;
- //    }
- //   ++receivedCount;
     TLOG_DEBUG(TLVL_GREETING) << get_name() << ": Received name parameter"  << workingString << ". Using it in the greeting sentence";
     std::string greetingString;
     greetingString = "Hello " + workingString + "!";
