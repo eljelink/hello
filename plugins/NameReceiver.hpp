@@ -76,7 +76,7 @@ ERS_DECLARE_ISSUE_BASE(hello,
  NoOutputQueuesAvailableWarning,
  appfwk::GeneralDAQModuleIssue,
  "No output queues were available, so the configuration parameter will be dropped. Has initialization been successfully completed?",
-  (std::string)name),
+ ((std::string)name),
  ERS_EMPTY)
 
 } // namespace dunedaq
