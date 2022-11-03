@@ -1,17 +1,11 @@
-
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
 
 find_dependency(appfwk)
-find_dependency(rcif)
 find_dependency(logging)
 find_dependency(ers)
 find_dependency(daqconf)
-find_dependency(dfmessages)
-find_dependency(nlohmann_json)
-find_dependency(timinglibs)
-find_dependency(timing)
 find_dependency(iomanager)
 find_dependency(opmonlib)
 
