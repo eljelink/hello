@@ -1,7 +1,7 @@
 /**
  * @file HelloName.hpp
  *
- * Developer(s) of this DAQModule have yet to replace this line with a brief description of the DAQModule.
+ * This module receives name parameter from NameReceiver module and create simple greeting sentence "Hello Name" which is further sent to HelloToYou module
  *
  * This is part of the DUNE DAQ Software Suite, copyright 2020.
  * Licensing/copyright details are in the COPYING file that you should have
