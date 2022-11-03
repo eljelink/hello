@@ -5,5 +5,6 @@ To generate valid configuration file you can issue the following command: hello_
 The -h option will show you the available configuration options. 
 A configuration directory will be created in your working directory.
 To run issue write the following command: nanorc [configuration directory]
+
 You can now boot the application and send run control commands to the application 
 It will be possible to monitor the output of the application in the log file (created in the working directory).
